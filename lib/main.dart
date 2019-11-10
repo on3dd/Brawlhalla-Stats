@@ -1,65 +1,29 @@
 import 'package:flutter/material.dart';
 
+import 'package:brawlhalla_stats/scoped_models/main.dart';
+import 'package:brawlhalla_stats/screens/home.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+// TODO: Hide api key
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Brawlhalla Stats',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Brawlhalla Stats'),
-    );
-  }
-}
+    final MainModel _model = MainModel();
+		_model.init(context);
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Image.asset(
-          'assets/images/brawlhalla_logo.png',
-          fit: BoxFit.cover,
-          height: 40,
+    return ScopedModel<MainModel> (
+      model: _model,
+      child: MaterialApp(
+        title: 'Brawlhalla Stats',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
         ),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RaisedButton(
-              onPressed: () {},
-              child: Text(
-                "Login",
-                style: TextStyle(fontSize: 20, color: Colors.white),
-              ),
-              color: Colors.blue,
-
-            ),
-            RaisedButton(
-              onPressed: null,
-              child: Text(
-                "Load stats",
-                style: TextStyle(fontSize: 20, color: Colors.white),
-              ),
-            )
-          ],
-        ),
-      ),
+        home: MyHomePage(title: 'Brawlhalla Stats'),
+      )
     );
   }
 }
