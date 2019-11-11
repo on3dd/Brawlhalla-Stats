@@ -45,10 +45,12 @@ class _MyHomePageState extends State<MyHomePage> {
               RaisedButton(
                 onPressed: model.brawlhallaId != null
                     ? () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ProfilePage()));
+                	model.getPlayerStats().then((res) => {
+										Navigator.push(
+											context,
+											MaterialPageRoute(
+												builder: (context) => ProfilePage()))
+									});
                       }
                     : null,
                 child: Text(

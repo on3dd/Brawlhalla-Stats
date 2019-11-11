@@ -7,7 +7,6 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      model.getPlayerStats();
       return Scaffold(
           appBar: AppBar(
             title: Image.asset(
@@ -17,8 +16,24 @@ class ProfilePage extends StatelessWidget {
             ),
             centerTitle: true,
           ),
-          body: Center(
-            child: Column(),
+          body: Container(
+						margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            child: Column(
+							children: <Widget>[
+								Row(
+									children: <Widget>[
+										Text('${model.player.name}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36)),
+									],
+								),
+								Row(
+									children: <Widget>[
+										Text('${model.player.clan.name}', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24)),
+									],
+								),
+//								Text('${model.player.name}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36)),
+//								Text('${model.player.clan.name}', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24)),
+							],
+						),
           ));
     });
   }
