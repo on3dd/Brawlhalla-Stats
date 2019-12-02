@@ -44,7 +44,7 @@ class ProfilePage extends StatelessWidget {
                         children: <Widget>[
                           Text('${model.player.level} level',
                               style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 24)),
+                                  fontWeight: FontWeight.w600, fontSize: 28)),
                         ],
                       )),
                       CenterHorizontal(Row(
@@ -56,11 +56,10 @@ class ProfilePage extends StatelessWidget {
                             animationDuration: 1000,
                             percent: model.player.xp_percentage,
                             center: Text(
-                                model.player.xp_percentage.toStringAsFixed(2) +
-                                    "%",
+                                model.player.xp_percentage.toStringAsFixed(2) + "% exp",
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontWeight: FontWeight.bold)),
+                                    fontWeight: FontWeight.w400)),
                             linearStrokeCap: LinearStrokeCap.roundAll,
                             progressColor: Colors.green,
                           ),
@@ -69,6 +68,37 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                 ),
+								Container(
+									margin: EdgeInsets.only(top: 20),
+									child: Column(
+										children: <Widget>[
+											CenterHorizontal(Row(
+												children: <Widget>[
+													Text('${model.player.games} games',
+															style: TextStyle(
+																	fontWeight: FontWeight.w600, fontSize: 28)),
+												],
+											)),
+											CenterHorizontal(Row(
+												children: <Widget>[
+													new CircularPercentIndicator(
+														radius: 200,
+														lineWidth: 20.0,
+														percent: model.player.wins/model.player.games,
+														center: new Text(
+															'${model.calculateWinrate()}% \n WINRATE',
+															textAlign: TextAlign.center,
+															style: TextStyle(
+																	fontWeight: FontWeight.normal,
+																	fontSize: 20,
+															),),
+														progressColor: Colors.green,
+													)
+												],
+											)),
+										],
+									),
+								)
               ],
             ),
           ));

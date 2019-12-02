@@ -76,8 +76,10 @@ class MainModel extends Model {
         clan,
     );
 
-    print(this._player.xp_percentage);
-
     return true;
   }
+
+  double calculateWinrate() {
+  	return this._player.wins/this._player.games * 100;
+	}
 }
