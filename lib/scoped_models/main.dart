@@ -69,11 +69,14 @@ class MainModel extends Model {
         data['brawlhalla_id'],
         data['name'],
         data['level'],
+        data['xp_percentage'],
         data['games'],
         data['wins'],
         legends,
         clan,
     );
+
+    print(this._player.xp_percentage);
 
     return true;
   }
