@@ -1,3 +1,4 @@
+import 'package:brawlhalla_stats/screens/clan.dart';
 import 'package:flutter/material.dart';
 import 'package:brawlhalla_stats/scoped_models/main.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -33,9 +34,19 @@ class ProfilePage extends StatelessWidget {
                 )),
                 CenterHorizontal(Row(
                   children: <Widget>[
-                    Text('${model.player.clan.name}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w400, fontSize: 24)),
+                    FlatButton(
+											onPressed: () {
+												model.getClanInfo().then((res) => {
+													Navigator.push(
+															context,
+															MaterialPageRoute(
+																	builder: (context) => ClanPage()))
+												});
+											},
+                      child: Text('${model.player.clan.name}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 24)),
+                    )
                   ],
                 )),
                 Container(
@@ -115,42 +126,42 @@ class ProfilePage extends StatelessWidget {
                         ],
                       )),
                       SizedBox(
-												height: 400,
-												child: ListView.separated(
-														separatorBuilder: (context, index) => Divider(
-																color: Colors.grey
-														),
-														scrollDirection: Axis.vertical,
-														shrinkWrap: true,
-														itemCount: model.player.legends.length,
-														itemBuilder: (BuildContext context, int index) {
-															return ListTile(
-																leading: CircleAvatar(
-																	backgroundImage: AssetImage(
-																			model.player.legends[index].picture),
-																	backgroundColor: Colors.blue,
-																),
-																title: Text(
-																	capitalize(model.player.legends[index].name),
-																	style: TextStyle(
-																		fontSize: 20,
-																		fontWeight: FontWeight.normal,
-																	),
-																),
-																subtitle: Text(
-																	'${model.player.legends[index].level} level, ${model.player.legends[index].games} games',
-																	style: TextStyle(
-																		fontSize: 16,
-																		fontWeight: FontWeight.w400,
-																	),
-																),
-																trailing: Icon(Icons.keyboard_arrow_right),
-																onTap: () {
-																	print('${capitalize(model.player.legends[index].name)} was pressed');
-																},
-															);
-														}),
-											)
+                        height: 400,
+                        child: ListView.separated(
+                            separatorBuilder: (context, index) =>
+                                Divider(color: Colors.grey),
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: model.player.legends.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage: AssetImage(
+                                      model.player.legends[index].picture),
+                                  backgroundColor: Colors.blue,
+                                ),
+                                title: Text(
+                                  capitalize(model.player.legends[index].name),
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  '${model.player.legends[index].level} level, ${model.player.legends[index].games} games',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                trailing: Icon(Icons.keyboard_arrow_right),
+                                onTap: () {
+                                  print(
+                                      '${capitalize(model.player.legends[index].name)} was pressed');
+                                },
+                              );
+                            }),
+                      )
                     ]))
               ],
             ),

@@ -1,5 +1,7 @@
-import 'package:brawlhalla_stats/classes/legend.dart';
 import 'package:brawlhalla_stats/classes/clan.dart';
+import 'package:brawlhalla_stats/classes/clan_member.dart';
+import 'package:brawlhalla_stats/classes/legend.dart';
+import 'package:brawlhalla_stats/classes/player_clan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -13,6 +15,7 @@ class MainModel extends Model {
   String _steamId;
   int _brawlhallaId;
   Player _player;
+  Clan _clan;
 
   void init(BuildContext context) async {
     String data =
@@ -50,20 +53,19 @@ class MainModel extends Model {
     List<Legend> legends = [];
     for (final legend in data['legends']) {
       legends.add(new Legend(
-        legend['legend_id'],
-        legend['legend_name_key'],
-        legend['kos'],
-        legend['falls'],
-        legend['games'],
-        legend['wins'],
-        legend['level'],
-				'assets/images/legends/${legend['legend_name_key']}.png'
-      ));
+          legend['legend_id'],
+          legend['legend_name_key'],
+          legend['kos'],
+          legend['falls'],
+          legend['games'],
+          legend['wins'],
+          legend['level'],
+          'assets/images/legends/${legend['legend_name_key']}.png'));
     }
 
     legends.sort((a, b) => b.level.compareTo(a.level));
 
-    Clan clan = new Clan(
+    PlayerClan clan = new PlayerClan(
       data['clan']['clan_name'],
       data['clan']['clan_id'],
       data['clan']['clan_xp'],
@@ -80,6 +82,41 @@ class MainModel extends Model {
       legends,
       clan,
     );
+
+    return true;
+  }
+
+  Clan get clan => _clan;
+
+  Future<bool> getClanInfo() async {
+    http.Response response = await http.get(
+        Uri.encodeFull(
+            "https://api.brawlhalla.com/clan/${this._player.clan.id}/?api_key=$_apiKey"),
+        headers: {"Accept": "application/json"});
+
+    var data = jsonDecode(response.body);
+
+    List<ClanMember> members = [];
+    for (final member in data['clan']) {
+      members.add(new ClanMember(
+        member['brawlhalla_id'],
+        member['name'],
+        member['rank'],
+        'assets/images/clan_rankings/${member['rank']}.png',
+        member['join_date'],
+        member['xp'],
+      ));
+    }
+
+    members.sort((a, b) => a.joinDate.compareTo(b.joinDate));
+
+    this._clan = new Clan(
+			data['clan_id'],
+			data['clan_name'],
+			data['clan_create_date'],
+			data['clan_xp'],
+			members,
+		);
 
     return true;
   }
