@@ -6,6 +6,7 @@ class Legend {
   final int _games;
   final int _wins;
   final int _level;
+  final String _picture;
 
   int get id => _id;
   String get name => _name;
@@ -14,6 +15,7 @@ class Legend {
   int get games => _games;
   int get wins => _wins;
   int get level => _level;
+  String get picture => _picture;
 
-  Legend(this._id, this._name, this._kos, this._falls, this._games, this._wins, this._level);
+  Legend(this._id, this._name, this._kos, this._falls, this._games, this._wins, this._level, this._picture);
 }
