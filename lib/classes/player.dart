@@ -1,5 +1,5 @@
 import 'package:brawlhalla_stats/classes/legend.dart';
-import 'package:brawlhalla_stats/classes/clan.dart';
+import 'package:brawlhalla_stats/classes/player_clan.dart';
 
 class Player {
   final int _brawlhallaId;
@@ -9,7 +9,7 @@ class Player {
   final int _games;
   final int _wins;
   final List<Legend> _legends;
-  final Clan _clan;
+  final PlayerClan _clan;
 
   int get brawlhallaId => _brawlhallaId;
 
@@ -25,7 +25,7 @@ class Player {
 
   List<Legend> get legends => _legends;
 
-  Clan get clan => _clan;
+  PlayerClan get clan => _clan;
 
   Player(this._brawlhallaId,
 			this._name,

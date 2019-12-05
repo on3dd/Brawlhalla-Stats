@@ -1,13 +1,17 @@
+import 'package:brawlhalla_stats/classes/clan_member.dart';
+
 class Clan {
-  final String _name;
-  final int _id;
-  final String _clanXp;
-  final int _personalXp;
+	final int _id;
+	final String _name;
+	final int _createdAt;
+	final String _xp;
+	final List<ClanMember> _members;
 
-  String get name => _name;
-  int get id => _id;
-  String get clanXp => _clanXp;
-  int get personalXp => _personalXp;
+	int get id => _id;
+	String get name => _name;
+	int get createdAt => _createdAt;
+	String get xp => _xp;
+	List<ClanMember> get members => _members;
 
-  Clan(this._name, this._id, this._clanXp, this._personalXp);
+	Clan(this._id, this._name, this._createdAt, this._xp, this._members);
 }
