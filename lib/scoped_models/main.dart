@@ -2,6 +2,7 @@ import 'package:brawlhalla_stats/classes/clan.dart';
 import 'package:brawlhalla_stats/classes/clan_member.dart';
 import 'package:brawlhalla_stats/classes/legend.dart';
 import 'package:brawlhalla_stats/classes/player_clan.dart';
+import 'package:brawlhalla_stats/classes/ranked.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -34,15 +35,15 @@ class MainModel extends Model {
   }
 
   Future<Player> getPlayerStats(int id) async {
-    http.Response response = await http.get(
+    http.Response firstResponse = await http.get(
         Uri.encodeFull(
             "https://api.brawlhalla.com/player/$id/stats?api_key=$_apiKey"),
         headers: {"Accept": "application/json"});
 
-    var data = jsonDecode(response.body);
+    var totalData = jsonDecode(firstResponse.body);
 
     List<Legend> legends = [];
-    for (final legend in data['legends']) {
+    for (final legend in totalData['legends']) {
       legends.add(new Legend(
           legend['legend_id'],
           legend['legend_name_key'],
@@ -51,27 +52,47 @@ class MainModel extends Model {
           legend['games'],
           legend['wins'],
           legend['level'],
-          'assets/images/legends/${legend['legend_name_key']}.png'));
+          'assets/images/legends/${legend['legend_name_key']}.png',
+			));
     }
-
     legends.sort((a, b) => b.level.compareTo(a.level));
 
     PlayerClan clan = new PlayerClan(
-      data['clan']['clan_name'],
-      data['clan']['clan_id'],
-      data['clan']['clan_xp'],
-      data['clan']['personal_xp'],
+      totalData['clan']['clan_name'],
+      totalData['clan']['clan_id'],
+      totalData['clan']['clan_xp'],
+      totalData['clan']['personal_xp'],
     );
 
+		http.Response secondResponse = await http.get(
+				Uri.encodeFull(
+						"https://api.brawlhalla.com/player/$id/ranked?api_key=$_apiKey"),
+				headers: {"Accept": "application/json"});
+
+		var rankedData = jsonDecode(secondResponse.body);
+
+		Ranked ranked = new Ranked(
+			rankedData['rating'],
+			rankedData['peak_rating'],
+			rankedData['tier'],
+			'assets/images/ranked_ranks/${rankedData['tier'].split(' ')[0]}.png',
+			rankedData['games'],
+			rankedData['wins'],
+			rankedData['region'],
+			rankedData['global_rank'],
+			rankedData['region_rank'],
+		);
+
     Player p = new Player(
-      data['brawlhalla_id'],
-      data['name'],
-      data['level'],
-      data['xp_percentage'],
-      data['games'],
-      data['wins'],
+      totalData['brawlhalla_id'],
+      totalData['name'],
+      totalData['level'],
+      totalData['xp_percentage'],
+      totalData['games'],
+      totalData['wins'],
       legends,
       clan,
+			ranked,
     );
 
     return p;
@@ -91,12 +112,11 @@ class MainModel extends Model {
         member['brawlhalla_id'],
         member['name'],
         member['rank'],
-        'assets/images/clan_rankings/${member['rank']}.png',
+        'assets/images/clan_ranks/${member['rank']}.png',
         member['join_date'],
         member['xp'],
       ));
     }
-
     members.sort((a, b) => a.joinDate.compareTo(b.joinDate));
 
     Clan c = new Clan(
