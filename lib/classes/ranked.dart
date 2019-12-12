@@ -1,3 +1,5 @@
+import 'package:brawlhalla_stats/classes/legend_ranked.dart';
+
 class Ranked {
 	final int _rating;
 	final int _peakRating;
@@ -8,6 +10,7 @@ class Ranked {
 	final String _region;
 	final int _globalRank;
 	final int _regionRank;
+	final List<LegendRanked> _legends;
 
 	int get rating => _rating;
 	int get peakRating => _peakRating;
@@ -18,6 +21,17 @@ class Ranked {
 	String get region => _region;
 	int get globalRank => _globalRank;
 	int get regionRank => _regionRank;
+	List<LegendRanked> get legends => _legends;
 
-	Ranked(this._rating, this._peakRating, this._tier, this._picture, this._games, this._wins, this._region, this._globalRank, this._regionRank);
+	Ranked(
+			this._rating,
+			this._peakRating,
+			this._tier,
+			this._picture,
+			this._games,
+			this._wins,
+			this._region,
+			this._globalRank,
+			this._regionRank,
+			this._legends);
 }
