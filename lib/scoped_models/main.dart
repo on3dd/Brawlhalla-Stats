@@ -13,9 +13,6 @@ import 'dart:async';
 class MainModel extends Model {
   String _apiKey;
   String _steamId;
-  int _brawlhallaId;
-  Player _player;
-  Clan _clan;
 
   void init(BuildContext context) async {
     String data =
@@ -24,9 +21,7 @@ class MainModel extends Model {
     this._apiKey = jsonResult['api_key'];
   }
 
-  int get brawlhallaId => _brawlhallaId;
-
-  Future<bool> getBrawlhallaID(String steamID) async {
+  Future<int> getBrawlhallaID(String steamID) async {
     this._steamId = steamID;
 
     http.Response response = await http.get(
@@ -35,17 +30,13 @@ class MainModel extends Model {
         headers: {"Accept": "application/json"});
 
     var data = jsonDecode(response.body);
-    this._brawlhallaId = data['brawlhalla_id'];
-
-    return true;
+    return data['brawlhalla_id'];
   }
 
-  Player get player => _player;
-
-  Future<bool> getPlayerStats() async {
+  Future<Player> getPlayerStats(int id) async {
     http.Response response = await http.get(
         Uri.encodeFull(
-            "https://api.brawlhalla.com/player/$_brawlhallaId/stats?api_key=$_apiKey"),
+            "https://api.brawlhalla.com/player/$id/stats?api_key=$_apiKey"),
         headers: {"Accept": "application/json"});
 
     var data = jsonDecode(response.body);
@@ -72,7 +63,7 @@ class MainModel extends Model {
       data['clan']['personal_xp'],
     );
 
-    this._player = new Player(
+    Player p = new Player(
       data['brawlhalla_id'],
       data['name'],
       data['level'],
@@ -83,15 +74,13 @@ class MainModel extends Model {
       clan,
     );
 
-    return true;
+    return p;
   }
 
-  Clan get clan => _clan;
-
-  Future<bool> getClanInfo() async {
+  Future<Clan> getClanInfo(int id) async {
     http.Response response = await http.get(
         Uri.encodeFull(
-            "https://api.brawlhalla.com/clan/${this._player.clan.id}/?api_key=$_apiKey"),
+            "https://api.brawlhalla.com/clan/${id}/?api_key=$_apiKey"),
         headers: {"Accept": "application/json"});
 
     var data = jsonDecode(response.body);
@@ -110,7 +99,7 @@ class MainModel extends Model {
 
     members.sort((a, b) => a.joinDate.compareTo(b.joinDate));
 
-    this._clan = new Clan(
+    Clan c = new Clan(
 			data['clan_id'],
 			data['clan_name'],
 			data['clan_create_date'],
@@ -118,22 +107,22 @@ class MainModel extends Model {
 			members,
 		);
 
-    return true;
+    return c;
   }
 
-  double calculateWinrate() {
-    return this._player.wins / this._player.games * 100;
+  double calculateWinrate(int wins, games) {
+    return wins / games * 100;
   }
 
-  Color getWinrateColor() {
-    var wr = this._player.wins / this._player.games * 100;
-    if (wr <= 25.0)
-      return Colors.red;
-    else if (wr >= 25.0 && wr <= 50.0)
-      return Colors.orange;
-    else if (wr >= 50.0 && wr <= 75.0)
-      return Colors.lightGreen;
-    else
-      return Colors.green;
-  }
+//  Color getWinrateColor() {
+//    var wr = this._player.wins / this._player.games * 100;
+//    if (wr <= 25.0)
+//      return Colors.red;
+//    else if (wr >= 25.0 && wr <= 50.0)
+//      return Colors.orange;
+//    else if (wr >= 50.0 && wr <= 75.0)
+//      return Colors.lightGreen;
+//    else
+//      return Colors.green;
+//  }
 }
