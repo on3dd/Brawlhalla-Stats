@@ -50,7 +50,7 @@ class LoginPage extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MyHomePage()))
+                                    builder: (context) => MyHomePage(id: res)))
                           }),
                   child: Text(
                     "Submit",
