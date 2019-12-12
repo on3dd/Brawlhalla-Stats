@@ -6,6 +6,7 @@ class Player {
   final int _brawlhallaId;
   final String _name;
   final int _level;
+  final int _xp;
   final double _xp_percentage;
   final int _games;
   final int _wins;
@@ -15,6 +16,7 @@ class Player {
 
   int get brawlhallaId => _brawlhallaId;
   String get name => _name;
+  int get xp => _xp;
   int get level => _level;
   double get xp_percentage => _xp_percentage;
   int get games => _games;
@@ -25,6 +27,7 @@ class Player {
 
   Player(this._brawlhallaId,
 			this._name,
+			this._xp,
 			this._level,
 			this._xp_percentage,
       this._games,
